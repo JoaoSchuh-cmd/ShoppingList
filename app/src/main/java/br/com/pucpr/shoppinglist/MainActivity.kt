@@ -2,7 +2,6 @@ package br.com.pucpr.shoppinglist
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -14,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import br.com.pucpr.shoppinglist.data.ShoppingList
 import br.com.pucpr.shoppinglist.view.ItemListScreen
+import br.com.pucpr.shoppinglist.view.NewItemScreen
 import br.com.pucpr.shoppinglist.view.ShoppingListScreen
 import br.com.pucpr.shoppinglist.viewmodel.ShoppingListViewModel
 import com.google.gson.Gson
@@ -49,13 +49,17 @@ class MainActivity : ComponentActivity() {
                         ItemListScreen(
                             viewModel = shoppingListViewModel,
                             shoppingList = shoppingList,
-                            onBack = { navController.popBackStack() }
+                            onBack = { navController.popBackStack() },
+                            onAddItem = { listId ->
+                                navController.navigate("newItem/$listId")
+                            }
                         )
                     }
-//                    composable("newItem/{listId}") { backStackEntry ->
-//                        val listId = backStackEntry.arguments?.getString("listId")?.toInt() ?: -1
-//                        NewItemScreen(shoppingListViewModel, listId) { navController.popBackStack() }
-//                    }
+
+                    composable("newItem/{listId}") { backStackEntry ->
+                        val listId = backStackEntry.arguments?.getString("listId")?.toInt() ?: -1
+                        NewItemScreen (shoppingListViewModel, listId) { navController.popBackStack() }
+                    }
                 }
             }
         }

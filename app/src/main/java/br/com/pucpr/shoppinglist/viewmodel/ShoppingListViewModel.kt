@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.pucpr.shoppinglist.data.ShoppingList
-import br.com.pucpr.shoppinglist.data.ShoppingListItem
+import br.com.pucpr.shoppinglist.data.ShoppingListItemsItem
 import br.com.pucpr.shoppinglist.repository.ShoppingListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,13 +28,19 @@ class ShoppingListViewModel @Inject constructor(
         }
     }
 
-    fun getItemsForList(listId: Int): LiveData<List<ShoppingListItem>> {
+    fun getItemsForList(listId: Int): LiveData<List<ShoppingListItemsItem>> {
         return repository.getItemsForList(listId)
     }
 
-    fun updateItem(newItem: ShoppingListItem) {
+    fun updateItem(newItem: ShoppingListItemsItem) {
         viewModelScope.launch {
             repository.updateItem(newItem)
+        }
+    }
+
+    fun insertItem(item: ShoppingListItemsItem) {
+        viewModelScope.launch {
+            repository.insertItem(item)
         }
     }
 }
