@@ -1,5 +1,6 @@
 package br.com.pucpr.shoppinglist.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,33 +25,35 @@ import br.com.pucpr.shoppinglist.data.ShoppingList
 import br.com.pucpr.shoppinglist.viewmodel.ShoppingListViewModel
 
 @Composable
-fun ItemListScreen (
+fun ItemListScreen(
     viewModel: ShoppingListViewModel,
     shoppingList: ShoppingList,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onAddItem: (Int) -> Unit
 ) {
-    val items by viewModel.getItemsForList(shoppingList.id).observeAsState(emptyList())
-
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text(text = shoppingList.name, style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = shoppingList.name,
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyColumn() {
+        val items by viewModel.getItemsForList(shoppingList.id).observeAsState(emptyList())
+        LazyColumn {
             items(items) { item ->
-                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = item.name, modifier = Modifier.weight(1f))
-                    Checkbox(checked = item.isChecked, onCheckedChange = {
-                        viewModel.updateItem(item.copy(isChecked = it))
-                    })
-                }
-                Divider()
+                Text(text = "${item.name} (${item.quantity})")
             }
         }
 
-        Button(onClick = onBack, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text("Voltar")
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            Button(onClick = onBack) {
+                Text("Back")
+            }
+            Button(onClick = { onAddItem(shoppingList.id.toInt()) }) {
+                Text("Add Item")
+            }
         }
     }
-
 }
