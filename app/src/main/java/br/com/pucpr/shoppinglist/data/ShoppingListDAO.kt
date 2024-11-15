@@ -27,5 +27,5 @@ interface ShoppingListDAO {
     fun getItemsForList(listId: Int): LiveData<List<ShoppingListItemsItem>>
 
     @Update
-    fun updateItem(newItem: ShoppingListItemsItem)
+    suspend fun updateItem(newItem: ShoppingListItemsItem)
 }

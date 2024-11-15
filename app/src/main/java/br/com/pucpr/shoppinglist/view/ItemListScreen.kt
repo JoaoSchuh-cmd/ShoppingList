@@ -12,13 +12,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.com.pucpr.shoppinglist.data.ShoppingList
@@ -41,17 +39,33 @@ fun ItemListScreen(
         val items by viewModel.getItemsForList(shoppingList.id).observeAsState(emptyList())
         LazyColumn {
             items(items) { item ->
-                Text(text = "${item.name} (${item.quantity})")
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "${item.name} (${item.quantity})")
+                    Checkbox(
+                        checked = item.isChecked,
+                        onCheckedChange = { isChecked ->
+                            viewModel.updateItem(
+                                item.copy(isChecked = isChecked)
+                            )
+                        }
+                    )
+                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Button(onClick = onBack) {
                 Text("Back")
             }
-            Button(onClick = { onAddItem(shoppingList.id.toInt()) }) {
+            Button(onClick = { onAddItem(shoppingList.id) }) {
                 Text("Add Item")
             }
         }

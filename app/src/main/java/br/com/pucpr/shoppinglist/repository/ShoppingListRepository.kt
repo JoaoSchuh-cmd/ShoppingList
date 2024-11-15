@@ -21,6 +21,10 @@ class ShoppingListRepository @Inject constructor (
         shoppingListDao.deleteList(shoppingList)
     }
 
+    suspend fun updateItem(newItem: ShoppingListItemsItem) {
+        shoppingListDao.updateItem(newItem)
+    }
+
     suspend fun insertItem(item: ShoppingListItemsItem) {
         shoppingListDao.insertItem(item)
     }
@@ -29,8 +33,6 @@ class ShoppingListRepository @Inject constructor (
        return shoppingListDao.getItemsForList(listId)
     }
 
-    fun updateItem(newItem: ShoppingListItemsItem) {
-        shoppingListDao.updateItem(newItem)
-    }
+
 
 }

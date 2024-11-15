@@ -55,6 +55,7 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+
                     composable("newItem/{listId}") { backStackEntry ->
                         val listId = backStackEntry.arguments?.getString("listId")?.toInt() ?: -1
                         NewItemScreen (shoppingListViewModel, listId) { navController.popBackStack() }
