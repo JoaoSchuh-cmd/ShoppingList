@@ -1,11 +1,15 @@
 package br.com.pucpr.shoppinglist.data
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
+
+@Dao
 interface ShoppingListDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertList(shoppingList: ShoppingList)
@@ -15,4 +19,10 @@ interface ShoppingListDAO {
 
     @Query("SELECT * FROM shopping_list ORDER BY dateCreated DESC")
     fun getAllLists(): LiveData<List<ShoppingList>>
+
+    @Query("SELECT * FROM shopping_list_item WHERE shoppingListId = :listId")
+    fun getItemsForList(listId: Int): LiveData<List<ShoppingListItem>>
+
+    @Update
+    fun updateItem(newItem: ShoppingListItem)
 }
