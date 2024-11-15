@@ -17,12 +17,15 @@ interface ShoppingListDAO {
     @Delete
     suspend fun deleteList(shoppingList: ShoppingList)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertItem(item: ShoppingListItemsItem)
+
     @Query("SELECT * FROM shopping_list ORDER BY dateCreated DESC")
     fun getAllLists(): LiveData<List<ShoppingList>>
 
     @Query("SELECT * FROM shopping_list_item WHERE shoppingListId = :listId")
-    fun getItemsForList(listId: Int): LiveData<List<ShoppingListItem>>
+    fun getItemsForList(listId: Int): LiveData<List<ShoppingListItemsItem>>
 
     @Update
-    fun updateItem(newItem: ShoppingListItem)
+    fun updateItem(newItem: ShoppingListItemsItem)
 }
